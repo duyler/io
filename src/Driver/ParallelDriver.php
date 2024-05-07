@@ -11,6 +11,9 @@ use Duyler\Multiprocess\Exception\ProcessDriverNotAvailableException;
 use Fiber;
 use parallel\Runtime;
 
+/**
+ * @note This implementation is a simple example
+ */
 class ParallelDriver implements DriverInterface
 {
     public function __construct()
@@ -32,7 +35,6 @@ class ParallelDriver implements DriverInterface
                     Fiber::suspend();
                 }
 
-                $future->cancel();
                 $runtime->kill();
 
                 return $future->value();

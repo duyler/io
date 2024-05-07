@@ -26,19 +26,11 @@ class RunAsyncStateHandler implements MainSuspendStateHandlerInterface
 
         $driver = $this->driverProvider->getDriver($async->driver);
 
-        $context->write(ActionIdFormatter::toString($stateService->getActionId()), $async);
-
         return $driver->process(new DriverService($stateService), $async);
     }
 
     public function isResumable(Suspend $suspend, StateContext $context): bool
     {
-        $async = $context->read(ActionIdFormatter::toString($suspend->actionId));
-
-        if (null !== $async) {
-            return false;
-        }
-
         if (false === is_callable($suspend->value)) {
             return false;
         }
