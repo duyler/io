@@ -8,5 +8,5 @@ use Duyler\Multiprocess\Build\Attribute\Async;
 
 interface DriverInterface
 {
-    public function process(DriverService $stateService, Async $async): mixed;
+    public function process(DriverService $driverService, Async $async): mixed;
 }

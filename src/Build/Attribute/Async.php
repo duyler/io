@@ -12,7 +12,6 @@ readonly class Async implements AttributeInterface
 {
     public function __construct(
         public bool $withPromise = false,
-        public null|string $companion = null,
         public string $driver = 'parallel',
     ) {}
 

@@ -39,6 +39,10 @@ class RunAsyncStateHandler implements MainSuspendStateHandlerInterface
             return false;
         }
 
+        if (false === is_callable($suspend->value)) {
+            return false;
+        }
+
         return $this->asyncCollection->has(ActionIdFormatter::toString($suspend->actionId));
     }
 }

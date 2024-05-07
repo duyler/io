@@ -20,16 +20,11 @@ class ParallelDriver implements DriverInterface
         }
     }
 
-    public function process(DriverService $stateService, Async $async): mixed
+    public function process(DriverService $driverService, Async $async): mixed
     {
         $runtime = new Runtime();
 
-        if (null === $async->companion) {
-            $future = $runtime->run($stateService->getValue());
-        } else {
-            $companion = $stateService->getContainer()->get($async->companion);
-            $future = $runtime->run($companion, [$stateService->getValue()]);
-        }
+        $future = $runtime->run($driverService->getValue());
 
         if ($async->withPromise) {
             return function () use ($future, $runtime) {
