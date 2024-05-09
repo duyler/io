@@ -15,7 +15,7 @@ class DriverService
 
     public function getContainer(): ContainerInterface
     {
-        return $this->stateService->getContainer();
+        return $this->stateService->getActionContainer();
     }
 
     public function getValue(): mixed
