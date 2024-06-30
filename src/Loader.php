@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Duyler\Multiprocess;
 
-use Duyler\ActionBus\Dto\Context;
+use Duyler\ActionBus\Build\Context;
 use Duyler\DependencyInjection\ContainerInterface;
 use Duyler\Framework\Loader\LoaderServiceInterface;
 use Duyler\Framework\Loader\PackageLoaderInterface;

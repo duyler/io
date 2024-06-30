@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Duyler\Multiprocess\State;
 
 use Duyler\ActionBus\Contract\State\MainSuspendStateHandlerInterface;
-use Duyler\ActionBus\Formatter\ActionIdFormatter;
+use Duyler\ActionBus\Formatter\IdFormatter;
 use Duyler\ActionBus\State\Service\StateMainSuspendService;
 use Duyler\ActionBus\State\StateContext;
 use Duyler\ActionBus\State\Suspend;
@@ -22,7 +22,7 @@ class RunAsyncStateHandler implements MainSuspendStateHandlerInterface
 
     public function handle(StateMainSuspendService $stateService, StateContext $context): void
     {
-        $async = $this->asyncCollection->get(ActionIdFormatter::toString($stateService->getActionId()));
+        $async = $this->asyncCollection->get(IdFormatter::toString($stateService->getActionId()));
 
         $driver = $this->driverProvider->getDriver($async->driver);
 
@@ -37,6 +37,6 @@ class RunAsyncStateHandler implements MainSuspendStateHandlerInterface
             return false;
         }
 
-        return $this->asyncCollection->has(ActionIdFormatter::toString($suspend->actionId));
+        return $this->asyncCollection->has(IdFormatter::toString($suspend->actionId));
     }
 }
