@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Duyler\Multiprocess\Build\Attribute;
 
-use Duyler\Framework\Build\AttributeHandlerInterface;
-use Duyler\Framework\Build\AttributeInterface;
+use Duyler\Builder\Build\AttributeHandlerInterface;
+use Duyler\Builder\Build\AttributeInterface;
 use Duyler\Multiprocess\Build\AttributeHandler;
 
 readonly class Async implements AttributeInterface
