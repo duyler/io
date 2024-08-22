@@ -6,8 +6,8 @@ namespace Duyler\Multiprocess;
 
 use Duyler\ActionBus\Build\Context;
 use Duyler\DependencyInjection\ContainerInterface;
-use Duyler\Framework\Loader\LoaderServiceInterface;
-use Duyler\Framework\Loader\PackageLoaderInterface;
+use Duyler\Builder\Loader\LoaderServiceInterface;
+use Duyler\Builder\Loader\PackageLoaderInterface;
 use Duyler\Multiprocess\Build\AttributeHandler;
 use Duyler\Multiprocess\State\RunAsyncStateHandler;
 
