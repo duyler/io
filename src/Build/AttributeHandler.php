@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Duyler\Multiprocess\Build;
 
-use Duyler\ActionBus\Build\Action;
+use Duyler\EventBus\Build\Action;
 use Duyler\Builder\Build\AttributeHandlerInterface;
 use Duyler\Multiprocess\Build\Attribute\Async;
 

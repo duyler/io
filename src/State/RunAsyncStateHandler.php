@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Duyler\Multiprocess\State;
 
-use Duyler\ActionBus\Contract\State\MainSuspendStateHandlerInterface;
-use Duyler\ActionBus\Formatter\IdFormatter;
-use Duyler\ActionBus\State\Service\StateMainSuspendService;
-use Duyler\ActionBus\State\StateContext;
-use Duyler\ActionBus\State\Suspend;
+use Duyler\EventBus\Contract\State\MainSuspendStateHandlerInterface;
+use Duyler\EventBus\Formatter\IdFormatter;
+use Duyler\EventBus\State\Service\StateMainSuspendService;
+use Duyler\EventBus\State\StateContext;
+use Duyler\EventBus\State\Suspend;
 use Duyler\Multiprocess\Build\AsyncCollection;
 use Duyler\Multiprocess\DriverProvider;
 use Duyler\Multiprocess\DriverService;
