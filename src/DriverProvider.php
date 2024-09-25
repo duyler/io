@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Duyler\Multiprocess;
 
-use Duyler\DependencyInjection\ContainerInterface;
+use Duyler\DI\ContainerInterface;
 use Duyler\Multiprocess\Driver\ParallelDriver;
 use Duyler\Multiprocess\Exception\ProcessDriverNotRegisteredException;
 
