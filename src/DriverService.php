@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Duyler\Multiprocess;
 
 use Duyler\EventBus\State\Service\StateMainSuspendService;
-use Duyler\DependencyInjection\ContainerInterface;
+use Duyler\DI\ContainerInterface;
 
 class DriverService
 {

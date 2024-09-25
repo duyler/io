@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Duyler\Multiprocess;
 
 use Duyler\EventBus\Build\Context;
-use Duyler\DependencyInjection\ContainerInterface;
+use Duyler\DI\ContainerInterface;
 use Duyler\Builder\Loader\LoaderServiceInterface;
 use Duyler\Builder\Loader\PackageLoaderInterface;
 use Duyler\Multiprocess\Build\AttributeHandler;
