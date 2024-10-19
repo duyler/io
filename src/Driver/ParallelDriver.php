@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Duyler\Multiprocess\Driver;
 
-use Duyler\Multiprocess\Build\Attribute\Async;
+use Amp\Serialization\NativeSerializer;
+use Closure;
 use Duyler\Multiprocess\DriverInterface;
-use Duyler\Multiprocess\DriverService;
 use Duyler\Multiprocess\Exception\ProcessDriverNotAvailableException;
+use Duyler\Multiprocess\TaskInterface;
 use Fiber;
 use parallel\Runtime;
+use RuntimeException;
 
 /**
  * @note This implementation is a simple example
@@ -23,24 +25,48 @@ class ParallelDriver implements DriverInterface
         }
     }
 
-    public function process(DriverService $driverService, Async $async): mixed
+    public function process(TaskInterface $task): Closure
     {
-        $runtime = new Runtime();
+        $serializer  = new NativeSerializer([$task::class]);
 
-        $future = $runtime->run($driverService->getValue());
+        $serializedTask = $serializer->serialize($task);
+        $taskClass = $task::class;
 
-        if ($async->withPromise) {
-            return function () use ($future, $runtime) {
-                while (false === $future->done()) {
-                    Fiber::suspend();
+        $callback = function () use ($serializedTask, $taskClass) {
+            $dir = dirname('__DIR__') . '/';
+
+            while (!is_file($dir . '/vendor/autoload.php')) {
+                if (is_dir(realpath($dir))) {
+                    $dir = $dir . '../';
                 }
 
-                $runtime->kill();
+                if (false === realpath($dir)) {
+                    throw new RuntimeException('Cannot auto-detect autoload.php ');
+                }
+            }
 
-                return $future->value();
-            };
-        }
+            require_once $dir . '/vendor/autoload.php';
 
-        return $future->value();
+            $serializer  = new NativeSerializer([$taskClass]);
+
+            /** @var TaskInterface $task */
+            $task = $serializer->unserialize($serializedTask);
+
+            return $task->run();
+        };
+
+        $runtime = new Runtime();
+
+        $future = $runtime->run($callback);
+
+        return function () use ($future, $runtime) {
+            while (false === $future->done()) {
+                Fiber::suspend();
+            }
+
+            $runtime->kill();
+
+            return $future->value();
+        };
     }
 }
