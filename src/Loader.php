@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Duyler\Multiprocess;
+namespace Duyler\IO;
 
 use Duyler\EventBus\Build\Context;
 use Duyler\DI\ContainerInterface;
 use Duyler\Builder\Loader\LoaderServiceInterface;
 use Duyler\Builder\Loader\PackageLoaderInterface;
-use Duyler\Multiprocess\State\RunParallelStateHandler;
+use Duyler\IO\State\RunParallelStateHandler;
 
 class Loader implements PackageLoaderInterface
 {

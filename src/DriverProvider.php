@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Duyler\Multiprocess;
+namespace Duyler\IO;
 
 use Duyler\DI\ContainerInterface;
-use Duyler\Multiprocess\Driver\ParallelDriver;
-use Duyler\Multiprocess\Exception\ProcessDriverNotRegisteredException;
+use Duyler\IO\Driver\ParallelDriver;
+use Duyler\IO\Exception\ProcessDriverNotRegisteredException;
 
 class DriverProvider
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Duyler\Multiprocess\Exception;
+namespace Duyler\IO\Exception;
 
 use Exception;
 

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Duyler\Multiprocess\Driver;
+namespace Duyler\IO\Driver;
 
 use Amp\Serialization\NativeSerializer;
 use Closure;
-use Duyler\Multiprocess\DriverInterface;
-use Duyler\Multiprocess\Exception\ProcessDriverNotAvailableException;
-use Duyler\Multiprocess\TaskInterface;
+use Duyler\IO\DriverInterface;
+use Duyler\IO\Exception\ProcessDriverNotAvailableException;
+use Duyler\IO\TaskInterface;
 use Fiber;
 use parallel\Runtime;
 use RuntimeException;

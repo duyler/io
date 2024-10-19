@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Duyler\Multiprocess\Async;
+namespace Duyler\IO\Async;
 
-use Duyler\Multiprocess\Future\HttpRequestFuture;
-use Duyler\Multiprocess\Task\HttpRequestTask;
-use Duyler\Multiprocess\TaskInterface;
+use Duyler\IO\Future\HttpRequestFuture;
+use Duyler\IO\Task\HttpRequestTask;
+use Duyler\IO\TaskInterface;
 use Fiber;
 
 final class HttpRequest

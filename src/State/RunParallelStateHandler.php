@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Duyler\Multiprocess\State;
+namespace Duyler\IO\State;
 
 use Duyler\EventBus\Contract\State\MainSuspendStateHandlerInterface;
 use Duyler\EventBus\State\Service\StateMainSuspendService;
 use Duyler\EventBus\State\StateContext;
 use Duyler\EventBus\State\Suspend;
-use Duyler\Multiprocess\DriverProvider;
-use Duyler\Multiprocess\TaskInterface;
+use Duyler\IO\DriverProvider;
+use Duyler\IO\TaskInterface;
 
 class RunParallelStateHandler implements MainSuspendStateHandlerInterface
 {
