@@ -21,7 +21,8 @@
         "duyler/di": "dev-main",
         "duyler/builder": "dev-main",
         "duyler/event-bus": "dev-main",
-        "amphp/serialization": "^1.0"
+        "amphp/serialization": "^1.0",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
