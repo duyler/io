@@ -17,6 +17,7 @@
     },
     "require": {
         "php": "^8.3",
+        "ext-parallel": "*",
         "duyler/di": "dev-main",
         "duyler/builder": "dev-main",
         "duyler/event-bus": "dev-main",
