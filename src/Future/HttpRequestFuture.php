@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Duyler\Multiprocess\Future;
+namespace Duyler\IO\Future;
 
 use Closure;
 use GuzzleHttp\Psr7\Response;

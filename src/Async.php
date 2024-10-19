@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Duyler\Multiprocess;
+namespace Duyler\IO;
 
-use Duyler\Multiprocess\Async\HttpRequest;
+use Duyler\IO\Async\HttpRequest;
 use Fiber;
 use RuntimeException;
 

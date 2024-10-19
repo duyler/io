@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Duyler\Multiprocess\Task;
+namespace Duyler\IO\Task;
 
-use Duyler\Multiprocess\TaskInterface;
+use Duyler\IO\TaskInterface;
 use GuzzleHttp\Client;
 
 final class HttpRequestTask implements TaskInterface

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Duyler\Multiprocess;
+namespace Duyler\IO;
 
 interface TaskInterface
 {
