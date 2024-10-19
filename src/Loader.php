@@ -8,8 +8,7 @@ use Duyler\EventBus\Build\Context;
 use Duyler\DI\ContainerInterface;
 use Duyler\Builder\Loader\LoaderServiceInterface;
 use Duyler\Builder\Loader\PackageLoaderInterface;
-use Duyler\Multiprocess\Build\AttributeHandler;
-use Duyler\Multiprocess\State\RunAsyncStateHandler;
+use Duyler\Multiprocess\State\RunParallelStateHandler;
 
 class Loader implements PackageLoaderInterface
 {
@@ -19,14 +18,13 @@ class Loader implements PackageLoaderInterface
 
     public function load(LoaderServiceInterface $loaderService): void
     {
-        $runAsyncStateHandler = $this->container->get(RunAsyncStateHandler::class);
-        $attributeHandler = $this->container->get(AttributeHandler::class);
+        /** @var RunParallelStateHandler $runAsyncStateHandler */
+        $runAsyncStateHandler = $this->container->get(RunParallelStateHandler::class);
 
         $loaderService->addStateHandler($runAsyncStateHandler);
-        $loaderService->addAttributeHandler($attributeHandler);
 
         $loaderService->addStateContext(new Context([
-            RunAsyncStateHandler::class,
+            RunParallelStateHandler::class,
         ]));
     }
 }
