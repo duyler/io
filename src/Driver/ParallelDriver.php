@@ -12,6 +12,7 @@ use Duyler\IO\TaskInterface;
 use Fiber;
 use parallel\Runtime;
 use RuntimeException;
+use Throwable;
 
 /**
  * @note This implementation is a simple example
@@ -41,18 +42,22 @@ class ParallelDriver implements DriverInterface
                 }
 
                 if (false === realpath($dir)) {
-                    throw new RuntimeException('Cannot auto-detect autoload.php ');
+                    throw new RuntimeException('Cannot auto-detect autoload.php');
                 }
             }
 
             require_once $dir . '/vendor/autoload.php';
 
-            $serializer  = new NativeSerializer([$taskClass]);
+            try {
+                $serializer  = new NativeSerializer([$taskClass]);
 
-            /** @var TaskInterface $task */
-            $task = $serializer->unserialize($serializedTask);
+                /** @var TaskInterface $task */
+                $task = $serializer->unserialize($serializedTask);
 
-            return $task->run();
+                return $task->run();
+            } catch (Throwable $exception) {
+                throw new RuntimeException($exception->getMessage(), $exception->getCode(), $exception);
+            }
         };
 
         $runtime = new Runtime();

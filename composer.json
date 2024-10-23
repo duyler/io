@@ -4,7 +4,7 @@
     "description": "Duyler async library",
     "license": "MIT",
     "keywords": [
-        "async fiber"
+        "async fiber io"
     ],
     "authors": [
         {
@@ -21,6 +21,7 @@
         "duyler/di": "dev-main",
         "duyler/builder": "dev-main",
         "duyler/event-bus": "dev-main",
+        "duyler/database": "dev-main",
         "amphp/serialization": "^1.0",
         "guzzlehttp/guzzle": "^7.9"
     },
