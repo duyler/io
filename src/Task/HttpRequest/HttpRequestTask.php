@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Task;
+namespace Duyler\IO\Task\HttpRequest;
 
+use Duyler\IO\ActionService;
 use Duyler\IO\TaskInterface;
 use GuzzleHttp\Client;
 
@@ -36,4 +37,6 @@ final class HttpRequestTask implements TaskInterface
 
         return $result;
     }
+
+    public function prepare(ActionService $actionService): void {}
 }

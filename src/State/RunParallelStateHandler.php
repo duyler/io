@@ -8,6 +8,7 @@ use Duyler\EventBus\Contract\State\MainSuspendStateHandlerInterface;
 use Duyler\EventBus\State\Service\StateMainSuspendService;
 use Duyler\EventBus\State\StateContext;
 use Duyler\EventBus\State\Suspend;
+use Duyler\IO\ActionService;
 use Duyler\IO\DriverProvider;
 use Duyler\IO\TaskInterface;
 
@@ -20,6 +21,15 @@ class RunParallelStateHandler implements MainSuspendStateHandlerInterface
     public function handle(StateMainSuspendService $stateService, StateContext $context): void
     {
         $driver = $this->driverProvider->getDriver('parallel');
+
+        /** @var TaskInterface $task */
+        $task = $stateService->getValue();
+        $task->prepare(
+            new ActionService(
+                $stateService->getActionContainer(),
+                $stateService->getActionId(),
+            ),
+        );
 
         $resumeValue =  $driver->process($stateService->getValue());
 
