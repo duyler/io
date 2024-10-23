@@ -6,6 +6,7 @@ namespace Duyler\IO;
 
 use Duyler\IO\Async\HttpRequest\HttpRequest;
 use Duyler\IO\Async\SqlQuery\SqlQuery;
+use Duyler\IO\Future\Future;
 use Fiber;
 use RuntimeException;
 
@@ -21,6 +22,12 @@ final class Async
     {
         self::checkContext();
         return new SqlQuery();
+    }
+
+    public static function task(TaskInterface $task): Future
+    {
+        self::checkContext();
+        return new Future(Fiber::suspend($task));
     }
 
     private static function checkContext()

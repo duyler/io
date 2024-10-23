@@ -6,7 +6,7 @@ namespace Duyler\IO\Future;
 
 use Closure;
 
-final class SqlQueryFuture
+final class Future
 {
     public function __construct(
         private Closure $promise,
