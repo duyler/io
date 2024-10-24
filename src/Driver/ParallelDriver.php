@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Duyler\IO\Driver;
 
 use Amp\Serialization\NativeSerializer;
-use Closure;
 use Duyler\IO\DriverInterface;
 use Duyler\IO\Exception\ProcessDriverNotAvailableException;
+use Duyler\IO\Future\Future;
 use Duyler\IO\TaskInterface;
 use Fiber;
 use parallel\Runtime;
@@ -26,7 +26,7 @@ class ParallelDriver implements DriverInterface
         }
     }
 
-    public function process(TaskInterface $task): Closure
+    public function process(TaskInterface $task): Future
     {
         $serializer  = new NativeSerializer([$task::class]);
 
@@ -64,7 +64,7 @@ class ParallelDriver implements DriverInterface
 
         $future = $runtime->run($callback);
 
-        return function () use ($future, $runtime) {
+        return new Future(function () use ($future, $runtime) {
             while (false === $future->done()) {
                 Fiber::suspend();
             }
@@ -72,6 +72,6 @@ class ParallelDriver implements DriverInterface
             $runtime->kill();
 
             return $future->value();
-        };
+        });
     }
 }

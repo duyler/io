@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Duyler\IO\Async\HttpRequest;
 
 use Duyler\IO\Future\HttpRequestFuture;
-use Duyler\IO\Task\HttpRequest\HttpRequestTask;
+use Duyler\IO\Task\HttpRequestTask;
 use Duyler\IO\TaskInterface;
 use Fiber;
 
