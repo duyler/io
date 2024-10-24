@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Task\SqlQuery;
+namespace Duyler\IO\Task;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\Configuration;
@@ -20,17 +20,14 @@ use Override;
 
 final class SqlQueryTask implements TaskInterface
 {
-    private string $query;
     private array $queryParams = [];
     private array $types = [];
     private string $resultMethod;
     private array $connectionConfig;
 
-    public function setQuery(string $query): SqlQueryTask
-    {
-        $this->query = $query;
-        return $this;
-    }
+    public function __construct(
+        private string $sql,
+    ) {}
 
     public function setQueryParams(array $queryParams): SqlQueryTask
     {
@@ -69,12 +66,11 @@ final class SqlQueryTask implements TaskInterface
 
         /** @var Connection $connection */
         $connection = $container->get(Connection::class);
-        $result = $connection->executeQuery($this->query, $this->queryParams, $this->types);
+        $result = $connection->executeQuery($this->sql, $this->queryParams, $this->types);
 
         return $result->{$this->resultMethod}();
     }
 
-    #[Override]
     public function prepare(ActionService $actionService): void
     {
         /** @var DatabaseConfigInterface $connectionConfig */

@@ -18,10 +18,10 @@ final class Async
         return new HttpRequest($method, $url);
     }
 
-    public static function sqlQuery(): SqlQuery
+    public static function sqlQuery(string $sql): SqlQuery
     {
         self::checkContext();
-        return new SqlQuery();
+        return new SqlQuery($sql);
     }
 
     public static function task(TaskInterface $task): Future
