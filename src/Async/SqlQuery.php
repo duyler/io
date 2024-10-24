@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Async\SqlQuery;
+namespace Duyler\IO\Async;
 
 use Duyler\IO\Future\Future;
 use Duyler\IO\Task\SqlQueryTask;
@@ -17,6 +17,11 @@ final class SqlQuery
         $this->task = new SqlQueryTask($sql);
     }
 
+    public static function create(string $sql): SqlQuery
+    {
+        return new self($sql);
+    }
+
     public function setParams(array $params): SqlQuery
     {
         $this->task->setQueryParams($params);
@@ -29,7 +34,7 @@ final class SqlQuery
         return $this;
     }
 
-    public function fetchAllAssociative(): Future
+    public function fetchAll(): Future
     {
         $this->task->setResultMethod('fetchAllAssociative');
         return Fiber::suspend($this->task);
