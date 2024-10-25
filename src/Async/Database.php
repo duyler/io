@@ -8,7 +8,7 @@ use Duyler\IO\Future\Future;
 use Duyler\IO\Task\SqlQueryTask;
 use Fiber;
 
-final class SqlQuery
+final class Database
 {
     private SqlQueryTask $task;
 
@@ -17,18 +17,18 @@ final class SqlQuery
         $this->task = new SqlQueryTask($sql);
     }
 
-    public static function create(string $sql): SqlQuery
+    public static function query(string $sql): Database
     {
         return new self($sql);
     }
 
-    public function setParams(array $params): SqlQuery
+    public function setParams(array $params): Database
     {
         $this->task->setQueryParams($params);
         return $this;
     }
 
-    public function setTypes(array $types): SqlQuery
+    public function setTypes(array $types): Database
     {
         $this->task->setTypes($types);
         return $this;
