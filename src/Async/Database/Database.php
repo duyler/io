@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Async;
+namespace Duyler\IO\Async\Database;
 
 use Duyler\IO\Future\Future;
 use Duyler\IO\Task\SqlQueryTask;
