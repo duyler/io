@@ -45,9 +45,9 @@ final class HttpRequest
         return new self('PATCH', $url);
     }
 
-    public function setParams(array $params): HttpRequest
+    public function setOptions(array $options): HttpRequest
     {
-        $this->task->setParams($params);
+        $this->task->setOptions($options);
         return $this;
     }
 

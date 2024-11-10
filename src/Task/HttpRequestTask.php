@@ -9,16 +9,16 @@ use GuzzleHttp\Client;
 
 final class HttpRequestTask implements TaskInterface
 {
-    private array $params = [];
+    private array $options = [];
 
     public function __construct(
         private string $method,
         private string $url,
     ) {}
 
-    public function setParams(array $params): HttpRequestTask
+    public function setOptions(array $options): HttpRequestTask
     {
-        $this->params = $params;
+        $this->options = $options;
         return $this;
     }
 
@@ -27,10 +27,10 @@ final class HttpRequestTask implements TaskInterface
         $result = [];
 
         $client = new Client();
-        $response = $client->request($this->method, $this->url, $this->params);
+        $response = $client->request($this->method, $this->url, $this->options);
 
         $result['status'] = $response->getStatusCode();
-        $result['message'] = $response->getReasonPhrase();
+        $result['reason'] = $response->getReasonPhrase();
         $result['body'] = $response->getBody()->getContents();
         $result['headers'] = $response->getHeaders();
 

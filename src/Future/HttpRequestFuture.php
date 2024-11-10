@@ -20,7 +20,7 @@ final class HttpRequestFuture
             $responseArray['status'],
             $responseArray['headers'],
             $responseArray['body'] ?? null,
-            $responseArray['message'],
+            $responseArray['reason'],
         );
     }
 }
