@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Async\Http;
+namespace Duyler\IO\Async;
 
 use Duyler\IO\Future\HttpRequestFuture;
 use Duyler\IO\Task\HttpRequestTask;
