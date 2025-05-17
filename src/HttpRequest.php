@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Duyler\IO;
 
-use Duyler\IO\Http\Future\HttpRequestFuture;
+use Duyler\IO\Http\Future\SendRequestFuture;
 use Duyler\IO\Http\Task\HttpRequestTask;
 use Fiber;
 
@@ -53,8 +53,8 @@ final class HttpRequest
         return $this;
     }
 
-    public function send(): HttpRequestFuture
+    public function send(): SendRequestFuture
     {
-        return new HttpRequestFuture(Fiber::suspend($this->task));
+        return new SendRequestFuture(Fiber::suspend($this->task));
     }
 }
