@@ -55,5 +55,5 @@ jobs:
       - name: Run PHP CS Fixer
         run: vendor/bin/php-cs-fixer check --diff -v
 
-#      - name: Run Psalm
-#        run: vendor/bin/psalm --shepherd
+      - name: Run Psalm
+        run: vendor/bin/psalm --shepherd

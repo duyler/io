@@ -16,5 +16,17 @@
     </projectFiles>
     <issueHandlers>
         <MixedAssignment errorLevel="suppress" />
+        <MixedReturnStatement errorLevel="suppress" />
+        <PossiblyInvalidArgument errorLevel="suppress" />
+        <ArgumentTypeCoercion errorLevel="suppress" />
+        <PropertyNotSetInConstructor errorLevel="suppress" />
+        <MixedArgumentTypeCoercion errorLevel="suppress" />
+        <MixedMethodCall errorLevel="suppress" />
+        <PropertyTypeCoercion errorLevel="suppress" />
+        <MissingClosureReturnType errorLevel="suppress" />
+        <UndefinedClass errorLevel="suppress" />
+        <PossiblyFalseArgument errorLevel="suppress" />
+        <UnresolvableInclude errorLevel="suppress" />
+        <ClassMustBeFinal errorLevel="suppress" />
     </issueHandlers>
 </psalm>

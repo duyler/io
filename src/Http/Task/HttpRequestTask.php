@@ -6,11 +6,9 @@ namespace Duyler\IO\Http\Task;
 
 use Duyler\IO\TaskInterface;
 use GuzzleHttp\Client;
+use Override;
 use Yiisoft\Injector\Injector;
 
-/**
- * @psalm-suppress all
- */
 final class HttpRequestTask implements TaskInterface
 {
     private array $options = [];
@@ -26,6 +24,7 @@ final class HttpRequestTask implements TaskInterface
         return $this;
     }
 
+    #[Override]
     public function run(): mixed
     {
         $result = [];
@@ -36,6 +35,7 @@ final class HttpRequestTask implements TaskInterface
         $result['status'] = $response->getStatusCode();
         $result['reason'] = $response->getReasonPhrase();
         $result['body'] = $response->getBody()->getContents();
+        $result['version'] = $response->getProtocolVersion();
         $result['headers'] = $response->getHeaders();
 
         return $result;

@@ -8,12 +8,9 @@ use Duyler\IO\Http\Future\SendRequestFuture;
 use Duyler\IO\Http\Task\HttpRequestTask;
 use Fiber;
 
-/**
- * @psalm-suppress all
- */
 final class HttpRequest
 {
-    private TaskInterface $task;
+    private HttpRequestTask $task;
 
     public function __construct(
         string $method,
@@ -55,6 +52,8 @@ final class HttpRequest
 
     public function send(): SendRequestFuture
     {
-        return new SendRequestFuture(Fiber::suspend($this->task));
+        /** @var Future $future */
+        $future = Fiber::suspend($this->task);
+        return new SendRequestFuture($future);
     }
 }

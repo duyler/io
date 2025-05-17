@@ -31,7 +31,7 @@ class RunTaskStateHandler implements MainSuspendStateHandlerInterface
             $this->injector,
         );
 
-        $resumeValue =  $driver->process($stateService->getValue());
+        $resumeValue =  $driver->process($task);
 
         $stateService->setResumeValue($resumeValue);
     }

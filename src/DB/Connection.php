@@ -10,7 +10,7 @@ use Duyler\IO\DB\Task\SqlQueryTask;
 use Duyler\IO\Future;
 use Fiber;
 
-class Connection
+final class Connection
 {
     private SqlQueryTask $task;
 
@@ -34,13 +34,21 @@ class Connection
     public function fetchAll(?string $class = null): FetchAllFuture
     {
         $this->task->setResultMethod('fetchAll');
-        return new FetchAllFuture(Fiber::suspend($this->task), $class);
+
+        /** @var Future $future */
+        $future = Fiber::suspend($this->task);
+
+        return new FetchAllFuture($future, $class);
     }
 
     public function fetch(?string $class = null): FetchFuture
     {
         $this->task->setResultMethod('fetch');
-        return new FetchFuture(Fiber::suspend($this->task), $class);
+
+        /** @var Future $future */
+        $future = Fiber::suspend($this->task);
+
+        return new FetchFuture($future, $class);
     }
 
     public function fetchColumn(): Future

@@ -16,6 +16,7 @@ class FetchFuture
 
     public function await(): array|object
     {
+        /** @var array<string, mixed> $data */
         $data = $this->future->await();
 
         if (null === $this->class) {
