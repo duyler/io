@@ -2,16 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Async;
+namespace Duyler\IO\DB;
 
-use Duyler\IO\Future\Future;
-use Duyler\IO\Task\SqlQueryTask;
+use Duyler\IO\DB\Task\SqlQueryTask;
+use Duyler\IO\Future;
 use Fiber;
 
-/**
- * @psalm-suppress all
- */
-final class DB
+class Connection
 {
     private SqlQueryTask $task;
 
@@ -20,18 +17,13 @@ final class DB
         $this->task = new SqlQueryTask($database);
     }
 
-    public static function database(?string $database = null): DB
-    {
-        return new self($database);
-    }
-
-    public function query(string $sql): DB
+    public function query(string $sql): Connection
     {
         $this->task->setSql($sql);
         return $this;
     }
 
-    public function setParams(array $params): DB
+    public function setParams(array $params): Connection
     {
         $this->task->setQueryParams($params);
         return $this;

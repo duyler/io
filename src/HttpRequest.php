@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Async;
+namespace Duyler\IO;
 
-use Duyler\IO\Future\HttpRequestFuture;
-use Duyler\IO\Task\HttpRequestTask;
-use Duyler\IO\TaskInterface;
+use Duyler\IO\Http\Future\HttpRequestFuture;
+use Duyler\IO\Http\Task\HttpRequestTask;
 use Fiber;
 
 /**

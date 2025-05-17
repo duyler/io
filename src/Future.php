@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Future;
+namespace Duyler\IO;
 
 use Closure;
-use Duyler\IO\FutureInterface;
 
 final class Future implements FutureInterface
 {

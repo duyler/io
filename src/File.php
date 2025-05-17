@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Async;
+namespace Duyler\IO;
 
-use Duyler\IO\Future\Future;
-use Duyler\IO\Task\File\ReadFileTask;
-use Duyler\IO\Task\File\WriteFileTask;
+use Duyler\IO\File\Task\ReadFileTask;
+use Duyler\IO\File\Task\WriteFileTask;
 use Fiber;
 
 /**

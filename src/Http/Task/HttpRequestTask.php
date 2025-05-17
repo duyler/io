@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Task;
+namespace Duyler\IO\Http\Task;
 
 use Duyler\IO\TaskInterface;
 use GuzzleHttp\Client;

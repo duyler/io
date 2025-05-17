@@ -9,8 +9,8 @@ use Duyler\EventBus\State\Service\StateMainSuspendService;
 use Duyler\EventBus\State\StateContext;
 use Duyler\EventBus\State\Suspend;
 use Duyler\IO\ActionService;
+use Duyler\IO\DB\Task\SqlQueryTask;
 use Duyler\IO\DriverProvider;
-use Duyler\IO\Task\SqlQueryTask;
 
 /**
  * @psalm-suppress all

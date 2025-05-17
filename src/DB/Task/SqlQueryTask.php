@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Task;
+namespace Duyler\IO\DB\Task;
 
+use Cycle\Database;
+use Cycle\Database\Config;
 use Cycle\Database\LoggerFactoryInterface;
 use Duyler\DI\Container;
 use Duyler\IO\ActionService;
 use Duyler\IO\TaskInterface;
 use Duyler\ORM\DBALConfig;
-use Cycle\Database;
-use Cycle\Database\Config;
 use Override;
 
 /**

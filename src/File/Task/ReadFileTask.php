@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Task\File;
+namespace Duyler\IO\File\Task;
 
 use Duyler\IO\TaskInterface;
 use Override;

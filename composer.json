@@ -4,7 +4,10 @@
     "description": "Duyler async library",
     "license": "MIT",
     "keywords": [
-        "async fiber io"
+        "async",
+        "fiber",
+        "io",
+        "parallel"
     ],
     "authors": [
         {
@@ -23,15 +26,18 @@
         "duyler/event-bus": "dev-main",
         "duyler/database": "dev-main",
         "amphp/serialization": "^1.0",
-        "guzzlehttp/guzzle": "^7.9"
+        "guzzlehttp/guzzle": "^7.9",
+        "yiisoft/hydrator": "^1.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
+        "psr/container": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.30",
         "squizlabs/php_codesniffer": "^4.0",
-        "vimeo/psalm": "^5.0"
+        "vimeo/psalm": "^6.10"
     },
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Duyler\\IO\\": "src/"

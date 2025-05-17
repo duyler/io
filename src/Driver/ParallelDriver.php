@@ -7,7 +7,7 @@ namespace Duyler\IO\Driver;
 use Amp\Serialization\NativeSerializer;
 use Duyler\IO\DriverInterface;
 use Duyler\IO\Exception\ProcessDriverNotAvailableException;
-use Duyler\IO\Future\Future;
+use Duyler\IO\Future;
 use Duyler\IO\TaskInterface;
 use Fiber;
 use parallel\Runtime;
