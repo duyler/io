@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Duyler\IO\DB;
 
+use Duyler\IO\DB\Future\FetchAllFuture;
+use Duyler\IO\DB\Future\FetchFuture;
 use Duyler\IO\DB\Task\SqlQueryTask;
 use Duyler\IO\Future;
 use Fiber;
@@ -29,16 +31,16 @@ class Connection
         return $this;
     }
 
-    public function fetchAll(): Future
+    public function fetchAll(?string $class = null): FetchAllFuture
     {
         $this->task->setResultMethod('fetchAll');
-        return Fiber::suspend($this->task);
+        return new FetchAllFuture(Fiber::suspend($this->task), $class);
     }
 
-    public function fetch(): Future
+    public function fetch(?string $class = null): FetchFuture
     {
         $this->task->setResultMethod('fetch');
-        return Fiber::suspend($this->task);
+        return new FetchFuture(Fiber::suspend($this->task), $class);
     }
 
     public function fetchColumn(): Future

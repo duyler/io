@@ -10,6 +10,7 @@ use Duyler\EventBus\State\StateContext;
 use Duyler\EventBus\State\Suspend;
 use Duyler\IO\DriverProvider;
 use Duyler\IO\TaskInterface;
+use Override;
 use Yiisoft\Injector\Injector;
 
 class RunTaskStateHandler implements MainSuspendStateHandlerInterface
@@ -19,6 +20,7 @@ class RunTaskStateHandler implements MainSuspendStateHandlerInterface
         private Injector $injector,
     ) {}
 
+    #[Override]
     public function handle(StateMainSuspendService $stateService, StateContext $context): void
     {
         $driver = $this->driverProvider->getDriver('parallel');
@@ -34,6 +36,7 @@ class RunTaskStateHandler implements MainSuspendStateHandlerInterface
         $stateService->setResumeValue($resumeValue);
     }
 
+    #[Override]
     public function observed(Suspend $suspend, StateContext $context): bool
     {
         return $suspend->value instanceof TaskInterface;
