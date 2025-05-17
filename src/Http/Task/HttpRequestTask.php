@@ -6,6 +6,7 @@ namespace Duyler\IO\Http\Task;
 
 use Duyler\IO\TaskInterface;
 use GuzzleHttp\Client;
+use Yiisoft\Injector\Injector;
 
 /**
  * @psalm-suppress all
@@ -39,4 +40,7 @@ final class HttpRequestTask implements TaskInterface
 
         return $result;
     }
+
+    #[Override]
+    public function prepare(Injector $injector): void {}
 }

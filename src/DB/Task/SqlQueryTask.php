@@ -12,11 +12,11 @@ use Duyler\Config\ConfigInterface;
 use Duyler\Config\FileConfig;
 use Duyler\DI\Container;
 use Duyler\DI\ContainerConfig;
-use Duyler\IO\ActionService;
 use Duyler\IO\IOConfig;
 use Duyler\IO\TaskInterface;
 use Duyler\ORM\DBALConfig;
 use Override;
+use Yiisoft\Injector\Injector;
 
 /**
  * @psalm-suppress all
@@ -91,10 +91,10 @@ final class SqlQueryTask implements TaskInterface
         return $dbal->database($this->database)->query($this->sql, $this->queryParams)->{$this->resultMethod}();
     }
 
-    public function prepare(ActionService $actionService): void
+    public function prepare(Injector $injector): void
     {
         /** @var IOConfig $ioConfig */
-        $ioConfig = $actionService->getActionContainer()->getInstance(IOConfig::class);
+        $ioConfig = $injector->make(IOConfig::class);
 
         $this->configDir = $ioConfig->configDir;
         $this->rootFile = $ioConfig->rootFile;

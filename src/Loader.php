@@ -8,8 +8,7 @@ use Duyler\EventBus\Build\Context;
 use Duyler\DI\ContainerInterface;
 use Duyler\Builder\Loader\LoaderServiceInterface;
 use Duyler\Builder\Loader\PackageLoaderInterface;
-use Duyler\IO\State\RunDefaultTaskStateHandler;
-use Duyler\IO\State\RunSqlQueryTaskStateHandler;
+use Duyler\IO\State\RunTaskStateHandler;
 
 /**
  * @psalm-suppress all
@@ -22,17 +21,13 @@ class Loader implements PackageLoaderInterface
 
     public function load(LoaderServiceInterface $loaderService): void
     {
-        /** @var RunDefaultTaskStateHandler $runDefaultTaskStateHandler */
-        $runDefaultTaskStateHandler = $this->container->get(RunDefaultTaskStateHandler::class);
+        /** @var RunTaskStateHandler $runTaskStateHandler */
+        $runTaskStateHandler = $this->container->get(RunTaskStateHandler::class);
 
-        /** @var RunSqlQueryTaskStateHandler $runSqlQueryTaskStateHandler */
-        $runSqlQueryTaskStateHandler = $this->container->get(RunSqlQueryTaskStateHandler::class);
-
-        $loaderService->addStateHandler($runDefaultTaskStateHandler);
-        $loaderService->addStateHandler($runSqlQueryTaskStateHandler);
+        $loaderService->addStateHandler($runTaskStateHandler);
 
         $loaderService->addStateContext(new Context([
-            RunDefaultTaskStateHandler::class,
+            RunTaskStateHandler::class,
         ]));
     }
 }

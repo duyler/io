@@ -8,30 +8,25 @@ use Duyler\EventBus\Contract\State\MainSuspendStateHandlerInterface;
 use Duyler\EventBus\State\Service\StateMainSuspendService;
 use Duyler\EventBus\State\StateContext;
 use Duyler\EventBus\State\Suspend;
-use Duyler\IO\ActionService;
-use Duyler\IO\DB\Task\SqlQueryTask;
 use Duyler\IO\DriverProvider;
+use Duyler\IO\TaskInterface;
+use Yiisoft\Injector\Injector;
 
-/**
- * @psalm-suppress all
- */
-class RunSqlQueryTaskStateHandler implements MainSuspendStateHandlerInterface
+class RunTaskStateHandler implements MainSuspendStateHandlerInterface
 {
     public function __construct(
         private DriverProvider $driverProvider,
+        private Injector $injector,
     ) {}
 
     public function handle(StateMainSuspendService $stateService, StateContext $context): void
     {
         $driver = $this->driverProvider->getDriver('parallel');
 
-        /** @var SqlQueryTask$task */
+        /** @var TaskInterface $task */
         $task = $stateService->getValue();
         $task->prepare(
-            new ActionService(
-                $stateService->getActionContainer(),
-                $stateService->getActionId(),
-            ),
+            $this->injector,
         );
 
         $resumeValue =  $driver->process($stateService->getValue());
@@ -41,6 +36,6 @@ class RunSqlQueryTaskStateHandler implements MainSuspendStateHandlerInterface
 
     public function observed(Suspend $suspend, StateContext $context): bool
     {
-        return $suspend->value instanceof SqlQueryTask;
+        return $suspend->value instanceof TaskInterface;
     }
 }
