@@ -7,8 +7,13 @@ namespace Duyler\IO\DB\Task;
 use Cycle\Database;
 use Cycle\Database\Config;
 use Cycle\Database\LoggerFactoryInterface;
+use Duyler\Builder\ConfigCollector;
+use Duyler\Config\ConfigInterface;
+use Duyler\Config\FileConfig;
 use Duyler\DI\Container;
+use Duyler\DI\ContainerConfig;
 use Duyler\IO\ActionService;
+use Duyler\IO\IOConfig;
 use Duyler\IO\TaskInterface;
 use Duyler\ORM\DBALConfig;
 use Override;
@@ -20,8 +25,9 @@ final class SqlQueryTask implements TaskInterface
 {
     private array $queryParams = [];
     private string $resultMethod;
-    private array $connectionConfig;
     private string $sql;
+    private string $configDir;
+    private string $rootFile;
 
     public function __construct(
         private ?string $database,
@@ -48,47 +54,36 @@ final class SqlQueryTask implements TaskInterface
     #[Override]
     public function run(): mixed
     {
-        $container = new Container();
+        $containerConfig = new ContainerConfig();
+        $configCollector = new ConfigCollector($containerConfig);
+
+        $config = new FileConfig(
+            configDir: $this->configDir,
+            rootFile: $this->rootFile,
+            externalConfigCollector: $configCollector,
+        );
+
+        $container = new Container($containerConfig);
+        $container->set($config);
+
+        $container->bind(
+            [
+                ConfigInterface::class => FileConfig::class,
+            ],
+        );
+
+        /** @var DBALConfig $dbalConfig */
+        $dbalConfig = $container->get(DBALConfig::class);
 
         /** @var LoggerFactoryInterface $logger */
-        $logger = null !== $this->connectionConfig['logger']
-            ? $container->get($this->connectionConfig['logger'])
-            : null;
-
-        $connections = [];
-
-        foreach ($this->connectionConfig['connections'] as $name => $connection) {
-
-            $connectionConfigClass = $connection['connection']['className'];
-
-            if ($connectionConfigClass === Config\Postgres\TcpConnectionConfig::class) {
-                unset($connection['connection']['className']);
-                unset($connection['connection']['charset']);
-                $connectionConfig = new Config\Postgres\TcpConnectionConfig(...$connection['connection']);
-            } else {
-                unset($connection['connection']['className']);
-                $connectionConfig = new Config\MySQL\TcpConnectionConfig(...$connection['connection']);
-            }
-
-            $connections[$name] = new $connection['className'](
-                connection: $connectionConfig,
-                schema: $connection['schema'],
-                driver: $connection['driver'],
-                reconnect: $connection['reconnect'],
-                timezone: $connection['timezone'],
-                queryCache: $connection['queryCache'],
-                readonlySchema: $connection['readonlySchema'],
-                readonly: $connection['readonly'],
-                options: $connection['options'],
-            );
-        }
+        $logger = null !== $dbalConfig->logger ? $container->get($dbalConfig->logger) : null;
 
         $dbal = new Database\DatabaseManager(
             config: new Config\DatabaseConfig([
-                'default' => $this->connectionConfig['default'],
-                'aliases' => $this->connectionConfig['aliases'],
-                'databases' => $this->connectionConfig['databases'],
-                'connections' => $connections,
+                'default' => $dbalConfig->default,
+                'aliases' => $dbalConfig->aliases,
+                'databases' => $dbalConfig->databases,
+                'connections' => $dbalConfig->connections,
             ]),
             loggerFactory: $logger,
         );
@@ -98,40 +93,10 @@ final class SqlQueryTask implements TaskInterface
 
     public function prepare(ActionService $actionService): void
     {
-        /** @var DBALConfig $dbalConfig */
-        $dbalConfig = $actionService->getActionContainer()->getInstance(DBALConfig::class);
+        /** @var IOConfig $ioConfig */
+        $ioConfig = $actionService->getActionContainer()->getInstance(IOConfig::class);
 
-        $connections = [];
-
-        foreach ($dbalConfig->connections as $name => $driverConfig) {
-            $connections[$name] = [
-                'className' => get_class($driverConfig),
-                'schema' => $driverConfig->schema,
-                'driver' => $driverConfig->driver,
-                'reconnect' => $driverConfig->reconnect,
-                'timezone' => $driverConfig->timezone,
-                'queryCache' => $driverConfig->queryCache,
-                'readonlySchema' => $driverConfig->readonlySchema,
-                'readonly' => $driverConfig->readonly,
-                'options' => $driverConfig->options,
-                'connection' => [
-                    'className' => get_class($driverConfig->connection),
-                    'database' => $driverConfig->connection->database,
-                    'host' => $driverConfig->connection->host,
-                    'port' => $driverConfig->connection->port,
-                    'user' => $driverConfig->connection->user,
-                    'password' => $driverConfig->connection->password,
-                    'options' => $driverConfig->connection->options,
-                    'charset' => $driverConfig->connection->charset ?? null,
-                ],
-            ];
-        }
-
-        $this->connectionConfig = [];
-        $this->connectionConfig['default'] = $dbalConfig->default;
-        $this->connectionConfig['aliases'] = $dbalConfig->aliases;
-        $this->connectionConfig['databases'] = $dbalConfig->databases;
-        $this->connectionConfig['connections'] = $connections;
-        $this->connectionConfig['logger'] = $dbalConfig->logger;
+        $this->configDir = $ioConfig->configDir;
+        $this->rootFile = $ioConfig->rootFile;
     }
 }
