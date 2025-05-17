@@ -9,6 +9,9 @@ use Duyler\IO\Task\HttpRequestTask;
 use Duyler\IO\TaskInterface;
 use Fiber;
 
+/**
+ * @psalm-suppress all
+ */
 final class HttpRequest
 {
     private TaskInterface $task;

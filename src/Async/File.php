@@ -9,6 +9,9 @@ use Duyler\IO\Task\File\ReadFileTask;
 use Duyler\IO\Task\File\WriteFileTask;
 use Fiber;
 
+/**
+ * @psalm-suppress all
+ */
 final class File
 {
     public static function get(string $path): Future

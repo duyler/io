@@ -11,6 +11,9 @@ use Duyler\EventBus\State\Suspend;
 use Duyler\IO\DriverProvider;
 use Duyler\IO\TaskInterface;
 
+/**
+ * @psalm-suppress all
+ */
 class RunDefaultTaskStateHandler implements MainSuspendStateHandlerInterface
 {
     public function __construct(

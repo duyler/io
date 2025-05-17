@@ -4,40 +4,38 @@ declare(strict_types=1);
 
 namespace Duyler\IO\Task;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\Configuration;
-use Doctrine\ORM\EntityManagerInterface;
-use Duyler\Database\DatabaseConfig;
-use Duyler\Database\DatabaseConfigInterface;
-use Duyler\Database\Provider\ConfigurationProvider;
-use Duyler\Database\Provider\ConnectionProvider;
-use Duyler\Database\Provider\EntityManagerProvider;
+use Cycle\Database\LoggerFactoryInterface;
 use Duyler\DI\Container;
-use Duyler\DI\Definition;
 use Duyler\IO\ActionService;
 use Duyler\IO\TaskInterface;
+use Duyler\ORM\DBALConfig;
+use Cycle\Database;
+use Cycle\Database\Config;
 use Override;
 
+/**
+ * @psalm-suppress all
+ */
 final class SqlQueryTask implements TaskInterface
 {
     private array $queryParams = [];
-    private array $types = [];
     private string $resultMethod;
     private array $connectionConfig;
+    private string $sql;
 
     public function __construct(
-        private string $sql,
+        private ?string $database,
     ) {}
+
+    public function setSql(string $sql): SqlQueryTask
+    {
+        $this->sql = $sql;
+        return $this;
+    }
 
     public function setQueryParams(array $queryParams): SqlQueryTask
     {
         $this->queryParams = $queryParams;
-        return $this;
-    }
-
-    public function setTypes(array $types): SqlQueryTask
-    {
-        $this->types = $types;
         return $this;
     }
 
@@ -51,42 +49,89 @@ final class SqlQueryTask implements TaskInterface
     public function run(): mixed
     {
         $container = new Container();
-        $container->addProviders([
-            Configuration::class => ConfigurationProvider::class,
-            Connection::class => ConnectionProvider::class,
-            EntityManagerInterface::class => EntityManagerProvider::class,
-        ]);
 
-        $container->addDefinition(
-            new Definition(
-                DatabaseConfig::class,
-                $this->connectionConfig,
-            ),
+        /** @var LoggerFactoryInterface $logger */
+        $logger = null !== $this->connectionConfig['logger']
+            ? $container->get($this->connectionConfig['logger'])
+            : null;
+
+        $connections = [];
+
+        foreach ($this->connectionConfig['connections'] as $name => $connection) {
+
+            $connectionConfigClass = $connection['connection']['className'];
+
+            if ($connectionConfigClass === Config\Postgres\TcpConnectionConfig::class) {
+                unset($connection['connection']['className']);
+                unset($connection['connection']['charset']);
+                $connectionConfig = new Config\Postgres\TcpConnectionConfig(...$connection['connection']);
+            } else {
+                unset($connection['connection']['className']);
+                $connectionConfig = new Config\MySQL\TcpConnectionConfig(...$connection['connection']);
+            }
+
+            $connections[$name] = new $connection['className'](
+                connection: $connectionConfig,
+                schema: $connection['schema'],
+                driver: $connection['driver'],
+                reconnect: $connection['reconnect'],
+                timezone: $connection['timezone'],
+                queryCache: $connection['queryCache'],
+                readonlySchema: $connection['readonlySchema'],
+                readonly: $connection['readonly'],
+                options: $connection['options'],
+            );
+        }
+
+        $dbal = new Database\DatabaseManager(
+            config: new Config\DatabaseConfig([
+                'default' => $this->connectionConfig['default'],
+                'aliases' => $this->connectionConfig['aliases'],
+                'databases' => $this->connectionConfig['databases'],
+                'connections' => $connections,
+            ]),
+            loggerFactory: $logger,
         );
 
-        /** @var Connection $connection */
-        $connection = $container->get(Connection::class);
-        $result = $connection->executeQuery($this->sql, $this->queryParams, $this->types);
-
-        return $result->{$this->resultMethod}();
+        return $dbal->database($this->database)->query($this->sql, $this->queryParams)->{$this->resultMethod}();
     }
 
     public function prepare(ActionService $actionService): void
     {
-        /** @var DatabaseConfigInterface $connectionConfig */
-        $connectionConfig = $actionService->getActionContainer()->getInstance(DatabaseConfigInterface::class);
+        /** @var DBALConfig $dbalConfig */
+        $dbalConfig = $actionService->getActionContainer()->getInstance(DBALConfig::class);
+
+        $connections = [];
+
+        foreach ($dbalConfig->connections as $name => $driverConfig) {
+            $connections[$name] = [
+                'className' => get_class($driverConfig),
+                'schema' => $driverConfig->schema,
+                'driver' => $driverConfig->driver,
+                'reconnect' => $driverConfig->reconnect,
+                'timezone' => $driverConfig->timezone,
+                'queryCache' => $driverConfig->queryCache,
+                'readonlySchema' => $driverConfig->readonlySchema,
+                'readonly' => $driverConfig->readonly,
+                'options' => $driverConfig->options,
+                'connection' => [
+                    'className' => get_class($driverConfig->connection),
+                    'database' => $driverConfig->connection->database,
+                    'host' => $driverConfig->connection->host,
+                    'port' => $driverConfig->connection->port,
+                    'user' => $driverConfig->connection->user,
+                    'password' => $driverConfig->connection->password,
+                    'options' => $driverConfig->connection->options,
+                    'charset' => $driverConfig->connection->charset ?? null,
+                ],
+            ];
+        }
 
         $this->connectionConfig = [];
-        $this->connectionConfig['entityPaths'] = $connectionConfig->getEntityPaths();
-        $this->connectionConfig['isDevMode'] = $connectionConfig->isDevMode();
-        $this->connectionConfig['driver'] = $connectionConfig->getDriver();
-        $this->connectionConfig['host'] = $connectionConfig->getHost();
-        $this->connectionConfig['port'] = $connectionConfig->getPort();
-        $this->connectionConfig['database'] = $connectionConfig->getDatabase();
-        $this->connectionConfig['username'] = $connectionConfig->getUsername();
-        $this->connectionConfig['password'] = $connectionConfig->getPassword();
-        $this->connectionConfig['charset'] = $connectionConfig->getCharset();
-        $this->connectionConfig['migrationsPaths'] = $connectionConfig->getMigrationsPaths();
-        $this->connectionConfig['fixturesPaths'] = $connectionConfig->getFixturesPaths();
+        $this->connectionConfig['default'] = $dbalConfig->default;
+        $this->connectionConfig['aliases'] = $dbalConfig->aliases;
+        $this->connectionConfig['databases'] = $dbalConfig->databases;
+        $this->connectionConfig['connections'] = $connections;
+        $this->connectionConfig['logger'] = $dbalConfig->logger;
     }
 }

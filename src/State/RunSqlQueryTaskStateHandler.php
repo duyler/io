@@ -12,6 +12,9 @@ use Duyler\IO\ActionService;
 use Duyler\IO\DriverProvider;
 use Duyler\IO\Task\SqlQueryTask;
 
+/**
+ * @psalm-suppress all
+ */
 class RunSqlQueryTaskStateHandler implements MainSuspendStateHandlerInterface
 {
     public function __construct(

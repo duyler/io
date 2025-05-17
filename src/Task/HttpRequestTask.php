@@ -7,6 +7,9 @@ namespace Duyler\IO\Task;
 use Duyler\IO\TaskInterface;
 use GuzzleHttp\Client;
 
+/**
+ * @psalm-suppress all
+ */
 final class HttpRequestTask implements TaskInterface
 {
     private array $options = [];

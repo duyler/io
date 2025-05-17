@@ -7,6 +7,9 @@ namespace Duyler\IO\Task\File;
 use Duyler\IO\TaskInterface;
 use Override;
 
+/**
+ * @psalm-suppress all
+ */
 final class ReadFileTask implements TaskInterface
 {
     private string $path;

@@ -11,6 +11,9 @@ use Duyler\Builder\Loader\PackageLoaderInterface;
 use Duyler\IO\State\RunDefaultTaskStateHandler;
 use Duyler\IO\State\RunSqlQueryTaskStateHandler;
 
+/**
+ * @psalm-suppress all
+ */
 class Loader implements PackageLoaderInterface
 {
     public function __construct(

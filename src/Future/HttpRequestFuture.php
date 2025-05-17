@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Duyler\IO\Future;
 
+use Duyler\IO\FutureInterface;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 
-final class HttpRequestFuture
+final class HttpRequestFuture implements FutureInterface
 {
     public function __construct(
         private Future $future,

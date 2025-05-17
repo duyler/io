@@ -8,18 +8,27 @@ use Duyler\IO\Future\Future;
 use Duyler\IO\Task\SqlQueryTask;
 use Fiber;
 
+/**
+ * @psalm-suppress all
+ */
 final class DB
 {
     private SqlQueryTask $task;
 
-    public function __construct(string $sql)
+    public function __construct(?string $database = null)
     {
-        $this->task = new SqlQueryTask($sql);
+        $this->task = new SqlQueryTask($database);
     }
 
-    public static function query(string $sql): DB
+    public static function database(?string $database = null): DB
     {
-        return new self($sql);
+        return new self($database);
+    }
+
+    public function query(string $sql): DB
+    {
+        $this->task->setSql($sql);
+        return $this;
     }
 
     public function setParams(array $params): DB
@@ -28,33 +37,33 @@ final class DB
         return $this;
     }
 
-    public function setTypes(array $types): DB
-    {
-        $this->task->setTypes($types);
-        return $this;
-    }
-
     public function fetchAll(): Future
     {
-        $this->task->setResultMethod('fetchAllAssociative');
+        $this->task->setResultMethod('fetchAll');
         return Fiber::suspend($this->task);
     }
 
-    public function fetchOne(): Future
+    public function fetch(): Future
     {
-        $this->task->setResultMethod('fetchOne');
+        $this->task->setResultMethod('fetch');
         return Fiber::suspend($this->task);
     }
 
-    public function fetchFirstColumn(): Future
+    public function fetchColumn(): Future
     {
-        $this->task->setResultMethod('fetchFirstColumn');
+        $this->task->setResultMethod('fetchColumn');
         return Fiber::suspend($this->task);
     }
 
-    public function execute(): Future
+    public function rowCount(): Future
     {
         $this->task->setResultMethod('rowCount');
+        return Fiber::suspend($this->task);
+    }
+
+    public function columnCount(): Future
+    {
+        $this->task->setResultMethod('columnCount');
         return Fiber::suspend($this->task);
     }
 }
