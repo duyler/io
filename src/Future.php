@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Duyler\IO;
 
 use Closure;
+use Override;
 
 final class Future implements FutureInterface
 {
@@ -12,6 +13,7 @@ final class Future implements FutureInterface
         private Closure $promise,
     ) {}
 
+    #[Override]
     public function await(): mixed
     {
         return ($this->promise)();

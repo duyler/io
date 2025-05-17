@@ -91,6 +91,7 @@ final class SqlQueryTask implements TaskInterface
         return $dbal->database($this->database)->query($this->sql, $this->queryParams)->{$this->resultMethod}();
     }
 
+    #[Override]
     public function prepare(Injector $injector): void
     {
         /** @var IOConfig $ioConfig */

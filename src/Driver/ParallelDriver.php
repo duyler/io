@@ -10,6 +10,7 @@ use Duyler\IO\Exception\ProcessDriverNotAvailableException;
 use Duyler\IO\Future;
 use Duyler\IO\TaskInterface;
 use Fiber;
+use Override;
 use parallel\Runtime;
 use RuntimeException;
 use Throwable;
@@ -26,6 +27,7 @@ class ParallelDriver implements DriverInterface
         }
     }
 
+    #[Override]
     public function process(TaskInterface $task): Future
     {
         $serializer  = new NativeSerializer([$task::class]);

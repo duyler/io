@@ -9,6 +9,7 @@ use Duyler\DI\ContainerInterface;
 use Duyler\Builder\Loader\LoaderServiceInterface;
 use Duyler\Builder\Loader\PackageLoaderInterface;
 use Duyler\IO\State\RunTaskStateHandler;
+use Override;
 
 /**
  * @psalm-suppress all
@@ -19,6 +20,7 @@ class Loader implements PackageLoaderInterface
         private ContainerInterface $container,
     ) {}
 
+    #[Override]
     public function load(LoaderServiceInterface $loaderService): void
     {
         /** @var RunTaskStateHandler $runTaskStateHandler */

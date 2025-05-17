@@ -17,6 +17,7 @@ class FetchAllFuture
 
     public function await(): Collection
     {
+        /** @var array<array-key, array<string, mixed>> $data */
         $data = $this->future->await();
 
         if (null === $this->class) {
