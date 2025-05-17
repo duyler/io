@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Future;
+namespace Duyler\IO\Http\Future;
 
+use Duyler\IO\Future;
+use Duyler\IO\FutureInterface;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 
-final class HttpRequestFuture
+final class SendRequestFuture implements FutureInterface
 {
     public function __construct(
         private Future $future,

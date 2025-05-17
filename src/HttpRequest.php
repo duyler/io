@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Async\Http;
+namespace Duyler\IO;
 
-use Duyler\IO\Future\HttpRequestFuture;
-use Duyler\IO\Task\HttpRequestTask;
-use Duyler\IO\TaskInterface;
+use Duyler\IO\Http\Future\SendRequestFuture;
+use Duyler\IO\Http\Task\HttpRequestTask;
 use Fiber;
 
+/**
+ * @psalm-suppress all
+ */
 final class HttpRequest
 {
     private TaskInterface $task;
@@ -51,8 +53,8 @@ final class HttpRequest
         return $this;
     }
 
-    public function send(): HttpRequestFuture
+    public function send(): SendRequestFuture
     {
-        return new HttpRequestFuture(Fiber::suspend($this->task));
+        return new SendRequestFuture(Fiber::suspend($this->task));
     }
 }

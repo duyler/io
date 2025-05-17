@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Future;
+namespace Duyler\IO;
 
 use Closure;
 
-final class Future
+final class Future implements FutureInterface
 {
     public function __construct(
         private Closure $promise,

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Duyler\IO;
 
-use Duyler\IO\Future\Future;
 use Fiber;
 use RuntimeException;
 

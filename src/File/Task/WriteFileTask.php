@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Task\File;
+namespace Duyler\IO\File\Task;
 
 use Duyler\IO\TaskInterface;
 use Override;
+use Yiisoft\Injector\Injector;
 
+/**
+ * @psalm-suppress all
+ */
 final class WriteFileTask implements TaskInterface
 {
     private string $path;
@@ -27,4 +31,7 @@ final class WriteFileTask implements TaskInterface
     {
         return file_put_contents($this->path, $this->contents);
     }
+
+    #[Override]
+    public function prepare(Injector $injector): void {}
 }

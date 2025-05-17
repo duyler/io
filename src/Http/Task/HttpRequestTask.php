@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Duyler\IO\Task;
+namespace Duyler\IO\Http\Task;
 
 use Duyler\IO\TaskInterface;
 use GuzzleHttp\Client;
+use Yiisoft\Injector\Injector;
 
+/**
+ * @psalm-suppress all
+ */
 final class HttpRequestTask implements TaskInterface
 {
     private array $options = [];
@@ -36,4 +40,7 @@ final class HttpRequestTask implements TaskInterface
 
         return $result;
     }
+
+    #[Override]
+    public function prepare(Injector $injector): void {}
 }
