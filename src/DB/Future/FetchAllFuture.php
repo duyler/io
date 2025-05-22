@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Duyler\IO\DB\Future;
 
+use Duyler\IO\DB\DateTimeImmutableTypeCast;
+use Duyler\IO\DB\UuidTypeCaster;
 use Duyler\IO\Future;
 use loophp\collection\Collection;
 use Yiisoft\Hydrator\Hydrator;
+use Yiisoft\Hydrator\TypeCaster\CompositeTypeCaster;
+use Yiisoft\Hydrator\TypeCaster\EnumTypeCaster;
+use Yiisoft\Hydrator\TypeCaster\HydratorTypeCaster;
+use Yiisoft\Hydrator\TypeCaster\PhpNativeTypeCaster;
 
 class FetchAllFuture
 {
@@ -25,7 +31,16 @@ class FetchAllFuture
         }
 
         $collection = Collection::empty();
-        $hydrator = new Hydrator();
+
+        $typeCaster = new CompositeTypeCaster(
+            new UuidTypeCaster(),
+            new PhpNativeTypeCaster(),
+            new DateTimeImmutableTypeCast(),
+            new HydratorTypeCaster(),
+            new EnumTypeCaster(),
+        );
+
+        $hydrator = new Hydrator($typeCaster);
 
         foreach ($data as $item) {
             $collection = $collection->append($hydrator->create($this->class, $item));

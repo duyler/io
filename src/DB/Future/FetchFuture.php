@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace Duyler\IO\DB\Future;
 
+use Duyler\IO\DB\DateTimeImmutableTypeCast;
+use Duyler\IO\DB\UuidTypeCaster;
 use Duyler\IO\Future;
 use Yiisoft\Hydrator\Hydrator;
+use Yiisoft\Hydrator\TypeCaster\CompositeTypeCaster;
+use Yiisoft\Hydrator\TypeCaster\EnumTypeCaster;
+use Yiisoft\Hydrator\TypeCaster\HydratorTypeCaster;
+use Yiisoft\Hydrator\TypeCaster\PhpNativeTypeCaster;
 
 class FetchFuture
 {
@@ -23,7 +29,15 @@ class FetchFuture
             return $data;
         }
 
-        $hydrator = new Hydrator();
+        $typeCaster = new CompositeTypeCaster(
+            new UuidTypeCaster(),
+            new PhpNativeTypeCaster(),
+            new DateTimeImmutableTypeCast(),
+            new HydratorTypeCaster(),
+            new EnumTypeCaster(),
+        );
+
+        $hydrator = new Hydrator($typeCaster);
         return $hydrator->create($this->class, $data);
     }
 }
