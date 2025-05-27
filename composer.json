@@ -27,9 +27,9 @@
         "amphp/serialization": "^1.0",
         "guzzlehttp/guzzle": "^7.9",
         "yiisoft/hydrator": "^1.6",
-        "loophp/collection": "^7.6",
         "cycle/database": "^2.13",
-        "duyler/orm": "dev-main"
+        "duyler/orm": "dev-main",
+        "illuminate/collections": "^12.15"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
