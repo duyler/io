@@ -7,7 +7,7 @@ namespace Duyler\IO\DB\Future;
 use Duyler\IO\DB\DateTimeImmutableTypeCast;
 use Duyler\IO\DB\UuidTypeCaster;
 use Duyler\IO\Future;
-use loophp\collection\Collection;
+use Illuminate\Support\Collection;
 use Yiisoft\Hydrator\Hydrator;
 use Yiisoft\Hydrator\TypeCaster\CompositeTypeCaster;
 use Yiisoft\Hydrator\TypeCaster\EnumTypeCaster;
@@ -43,7 +43,7 @@ class FetchAllFuture
         $hydrator = new Hydrator($typeCaster);
 
         foreach ($data as $item) {
-            $collection = $collection->append($hydrator->create($this->class, $item));
+            $collection->add($hydrator->create($this->class, $item));
         }
 
         return $collection;
