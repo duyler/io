@@ -21,7 +21,7 @@ class Loader implements PackageLoaderInterface
     ) {}
 
     #[Override]
-    public function load(LoaderServiceInterface $loaderService): void
+    public function beforeLoadBuild(LoaderServiceInterface $loaderService): void
     {
         /** @var RunTaskStateHandler $runTaskStateHandler */
         $runTaskStateHandler = $this->container->get(RunTaskStateHandler::class);
@@ -31,5 +31,11 @@ class Loader implements PackageLoaderInterface
         $loaderService->addStateContext(new Context([
             RunTaskStateHandler::class,
         ]));
+    }
+
+    #[Override]
+    public function afterLoadBuild(LoaderServiceInterface $loaderService): void
+    {
+        // No implementation needs
     }
 }
